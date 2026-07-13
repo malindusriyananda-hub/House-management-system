@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports
+              http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="BookingReport" pageWidth="1190" pageHeight="842" columnWidth="1150"
+              leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+
+    <parameter name="FROM_DATE" class="java.util.Date"/>
+    <parameter name="TO_DATE" class="java.util.Date"/>
+
+    <queryString>
+        <![CDATA[
+            SELECT b.booking_id, g.name AS guest_name, r.room_number, r.room_type,
+                   b.check_in_date, b.check_out_date, b.total_amount,
+                   p.payment_method, p.status AS payment_status
+            FROM bookings b
+            JOIN guests g ON b.guest_id = g.guest_id
+            JOIN rooms r ON b.room_id = r.room_id
+            LEFT JOIN payments p ON b.booking_id = p.booking_id
+            WHERE b.check_in_date BETWEEN $P{FROM_DATE} AND $P{TO_DATE}
+            ORDER BY b.check_in_date ASC
+        ]]>
+    </queryString>
+
+    <field name="booking_id" class="java.lang.Integer"/>
+    <field name="guest_name" class="java.lang.String"/>
+    <field name="room_number" class="java.lang.String"/>
+    <field name="room_type" class="java.lang.String"/>
+    <field name="check_in_date" class="java.sql.Date"/>
+    <field name="check_out_date" class="java.sql.Date"/>
+    <field name="total_amount" class="java.math.BigDecimal"/>
+    <field name="payment_method" class="java.lang.String"/>
+    <field name="payment_status" class="java.lang.String"/>
+
+    <title>
+        <band height="60">
+            <staticText>
+                <reportElement x="0" y="0" width="1150" height="40"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="20" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Hotel Booking Report]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="0" y="40" width="1150" height="20"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="12"/>
+                </textElement>
+                <text><![CDATA[From: ]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="60" y="40" width="200" height="20"/>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($P{FROM_DATE})]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="280" y="40" width="40" height="20"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="12"/>
+                </textElement>
+                <text><![CDATA[To:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="320" y="40" width="200" height="20"/>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($P{TO_DATE})]]></textFieldExpression>
+            </textField>
+        </band>
+    </title>
+
+    <columnHeader>
+        <band height="35">
+            <staticText>
+                <reportElement x="0" y="0" width="80" height="35" mode="Opaque" backcolor="#0D47A1" forecolor="#FFFFFF"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Booking ID]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="80" y="0" width="200" height="35" mode="Opaque" backcolor="#0D47A1" forecolor="#FFFFFF"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Guest Name]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="280" y="0" width="100" height="35" mode="Opaque" backcolor="#0D47A1" forecolor="#FFFFFF"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Room No]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="380" y="0" width="100" height="35" mode="Opaque" backcolor="#0D47A1" forecolor="#FFFFFF"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Room Type]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="480" y="0" width="120" height="35" mode="Opaque" backcolor="#0D47A1" forecolor="#FFFFFF"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Check-in]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="600" y="0" width="120" height="35" mode="Opaque" backcolor="#0D47A1" forecolor="#FFFFFF"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Check-out]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="720" y="0" width="150" height="35" mode="Opaque" backcolor="#0D47A1" forecolor="#FFFFFF"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Total Amount]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="870" y="0" width="140" height="35" mode="Opaque" backcolor="#0D47A1" forecolor="#FFFFFF"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Payment Method]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="1010" y="0" width="140" height="35" mode="Opaque" backcolor="#0D47A1" forecolor="#FFFFFF"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Payment Status]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+
+    <detail>
+        <band height="30">
+            <textField>
+                <reportElement x="0" y="0" width="80" height="30"/>
+                <box><pen lineWidth="0.25"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="9"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{booking_id}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="80" y="0" width="200" height="30"/>
+                <box><pen lineWidth="0.25"/></box>
+                <textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+                    <font size="9"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{guest_name}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="280" y="0" width="100" height="30"/>
+                <box><pen lineWidth="0.25"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="9"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{room_number}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="380" y="0" width="100" height="30"/>
+                <box><pen lineWidth="0.25"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="9"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{room_type}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="480" y="0" width="120" height="30"/>
+                <box><pen lineWidth="0.25"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="9"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{check_in_date}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="600" y="0" width="120" height="30"/>
+                <box><pen lineWidth="0.25"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="9"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{check_out_date}]]></textFieldExpression>
+            </textField>
+            <textField pattern="#,##0.00">
+                <reportElement x="720" y="0" width="150" height="30"/>
+                <box><pen lineWidth="0.25"/></box>
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <font size="9"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{total_amount}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="870" y="0" width="140" height="30"/>
+                <box><pen lineWidth="0.25"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="9"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{payment_method}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="1010" y="0" width="140" height="30"/>
+                <box><pen lineWidth="0.25"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="9"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{payment_status}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+
+    <summary>
+        <band height="50">
+            <staticText>
+                <reportElement x="0" y="10" width="200" height="25"/>
+                <textElement verticalAlignment="Middle">
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Total Bookings:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="200" y="10" width="100" height="25"/>
+                <textElement verticalAlignment="Middle">
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="400" y="10" width="200" height="25"/>
+                <textElement verticalAlignment="Middle">
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Total Revenue:]]></text>
+            </staticText>
+            <textField pattern="#,##0.00">
+                <reportElement x="600" y="10" width="150" height="25"/>
+                <textElement verticalAlignment="Middle">
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{total_amount}]]></textFieldExpression>
+            </textField>
+        </band>
+    </summary>
+
+</jasperReport>
